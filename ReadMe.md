@@ -1,3 +1,5 @@
+## Note: I would recommend using memory search (option 0) due to higher observed reliability.
+
 It can be really difficult to get the AES Key of a game if you do not know what you are doing, I remember when I didnt know how to get it so I decided to make a tool that makes it easier for beginnners
 
 #### If this doesn't work for you just a open a new issue, but provide the game name and a memory dump of it, if you already have the AES Key or find it later please provide that too :)
