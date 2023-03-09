@@ -57,7 +57,7 @@ namespace UEAesKeyFinder
                         return;
                     }
                     EngineVersion = searcher.SearchEngineVersion();
-                    if (EngineVersion != "")
+                    if (EngineVersion != "" && EngineVersion != "++UE4+")
                     {
                         Console.WriteLine($"Engine Version: {EngineVersion}");
                     }
@@ -78,9 +78,17 @@ namespace UEAesKeyFinder
 
                     game = new Process() { StartInfo = { FileName = path } };
                     game.Start();
-                    Thread.Sleep(1000);
+                    Thread.Sleep(7000);
                     // Not required to fully load
-                    NtSuspendProcess(game.Handle);
+                    try
+                    {
+                        NtSuspendProcess(game.Handle);
+                    }
+                    catch
+                    { 
+                        Console.WriteLine("Unable to suspend game.");
+                    }
+                    
 
                     searcher = new Searcher(game);
                     searcher.SetFilePath(path);
@@ -160,7 +168,7 @@ namespace UEAesKeyFinder
                 Console.Write("\n" + txt);
                 Console.ForegroundColor = ConsoleColor.White;
                 int EngineVersionI = 17;
-                if (EngineVersion != "") EngineVersionI = Convert.ToInt32(EngineVersion.Split(".")[1]);
+                if (EngineVersion != "" && EngineVersion != "++UE4+") EngineVersionI = Convert.ToInt32(EngineVersion.Split(".")[1]);
                 if (EngineVersionI < 18)
                 {
                     foreach (KeyValuePair<ulong, string> o in aesKeys)

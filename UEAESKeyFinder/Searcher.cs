@@ -26,7 +26,14 @@ public class Searcher
     {
         Process = p;
         hProcess = p.Handle;
-        AllocationBase = (ulong)p.MainModule.BaseAddress;
+        try
+        {
+            AllocationBase = (ulong)p.MainModule.BaseAddress;
+        }
+        catch 
+        { 
+            throw new Exception("Read/Write Memory error! (Try using Memory reading, this usually helps).\n\n"); 
+        }
         ProcessMemory = new byte[p.MainModule.ModuleMemorySize];
 
         // To best honest idk why some regions are 0 if we read all at once ¯\_(ツ)_/¯
@@ -225,7 +232,7 @@ public class Searcher
         {
             string EngineVersionStr = SearchEngineVersion();
             int EngineVersion = 17;
-            if (EngineVersionStr != "") EngineVersion = Convert.ToInt32(EngineVersionStr.Split(".")[1]);
+            if (EngineVersionStr != "" && EngineVersionStr != "++UE4+") EngineVersion = Convert.ToInt32(EngineVersionStr.Split(".")[1]);
             if (EngineVersion < 18)
             {
                 // Let's just try something, not sure if that works for all games
